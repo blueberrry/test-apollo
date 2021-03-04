@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import ErrorBoundary from 'react-native-error-boundary';
 
@@ -17,10 +17,13 @@ const TestFetch = () => {
       'http://yc-api.yoursclothing.com/api/navigation/v2/get?Token=9ba51c12-a444-458b-8a4c-d8ac6ffadfca&SiteName=Long Tall Sally&Language=ENG&NavigationName=Main-RNApp';
     const response = await fetch(navUrl)
       .then(status)
-      .then((response) => response.json());
+      .then((response) => response.json())
+      .catch((error) => ({ error }));
     setResponseAsText(JSON.stringify(response).toString());
   };
-  getNav();
+  useEffect(() => {
+    getNav();
+  }, []);
 
   console.log(responseAsText);
   if (responseAsText) return <View style={styles.container}>{<Text>{responseAsText}</Text>}</View>;
